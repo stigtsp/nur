@@ -7,8 +7,8 @@ rec {
 
   rakudo = callPackage ./pkgs/rakudo { nqp = nqp; };
   moarvm = callPackage ./pkgs/rakudo/moarvm.nix { };
-  nqp = callPackage    ./pkgs/rakudo/nqp.nix { moarvm = moarvm; };
-  zef = callPackage    ./pkgs/rakudo/zef.nix { };
+  nqp = callPackage ./pkgs/rakudo/nqp.nix { moarvm = moarvm; };
+  zef = callPackage ./pkgs/rakudo/zef.nix { rakudo = rakudo; };
 
 }
 

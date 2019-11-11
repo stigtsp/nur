@@ -19,8 +19,10 @@ stdenv.mkDerivation rec {
   # '';
 
   installPhase = ''
-    mkdir -p $out
-    env HOME=$TMPDIR ${rakudo}/bin/perl6 -I. bin/zef --install-to=$out install .
+    set -ex
+    mkdir -p "$out"
+    export HOME=$TMPDIR
+    ${rakudo}/bin/perl6 -I. ./bin/zef --/depends --/test-depends --/build-depends --install-to=$out install .
   '';
 
   postFixup =''
