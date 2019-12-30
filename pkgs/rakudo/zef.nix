@@ -13,24 +13,22 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ rakudo makeWrapper ];
 
-  # postPatch = ''
-  #   #substituteInPlace resources/config.json \
-  #   #  --replace '$*HOME' "$TMPDIR"
-  # '';
-
   installPhase = ''
     mkdir -p "$out"
-
-    # TODO: Set $HOME be $TMPDIR since zef writes cache-stuff there
-    env HOME=$TMPDIR ${rakudo}/bin/perl6 -I. ./bin/zef --/depends --/test-depends --/build-depends --install-to=$out install .
+    # TODO: Find better solution. zef stores cache stuff in $HOME with the
+    # default config.
+    env HOME=$TMPDIR ${rakudo}/bin/raku -I. ./bin/zef --/depends --/test-depends --/build-depends --install-to=$out install .
   '';
 
   postFixup =''
-    wrapProgram $out/bin/zef --argv0 zef --prefix RAKUDOLIB , "inst#$out"
+    wrapProgram $out/bin/zef --prefix RAKUDOLIB , "inst#$out"
   '';
 
   meta = with stdenv.lib; {
+    description = "Raku / Perl6 Module Management";
+    homepage    = "https://github.com/ugexe/zef";
     license     = licenses.artistic2;
     platforms   = platforms.unix;
+    maintainers = with maintainers; [ sgo ];
   };
 }

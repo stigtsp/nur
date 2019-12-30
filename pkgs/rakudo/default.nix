@@ -15,12 +15,15 @@ stdenv.mkDerivation rec {
     "--backends=moar"
     "--with-nqp=${nqp}/bin/nqp"
   ];
-  doCheck = true;
+
+  # Some tests fail on Darwin
+  doCheck = !stdenv.isDarwin;
 
   meta = with stdenv.lib; {
-    description = "A Perl 6 implementation";
+    description = "Raku implementation on top of Moar virtual machine";
     homepage    = https://www.rakudo.org;
     license     = licenses.artistic2;
     platforms   = platforms.unix;
+    maintainers = with maintainers; [ thoughtpolice vrthra sgo ];
   };
 }

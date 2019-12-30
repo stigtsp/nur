@@ -24,5 +24,6 @@ stdenv.mkDerivation rec {
     homepage    = "https://github.com/perl6/nqp";
     license     = licenses.artistic2;
     platforms   = platforms.unix;
+    maintainers = with maintainers; [ thoughtpolice vrthra sgo ];
   };
 }
