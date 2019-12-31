@@ -31,20 +31,22 @@ rec {
     };
     Cro-HTTP = rakuPackage {
         name = "Cro-HTTP";
-        buildInputs = [ openssl_1_0_2 ];
-        depends = [
-          rakuPackages.Base64
-          rakuPackages.Cro-Core
-          rakuPackages.Cro-TLS
-          rakuPackages.Crypt-Random
-          rakuPackages.DateTime-Parse
-          rakuPackages.HTTP-HPACK
-          rakuPackages.IO-Path-ChildSecure
-          rakuPackages.IO-Socket-Async-SSL
-          rakuPackages.JSON-Fast
-          rakuPackages.JSON-JWT
-          rakuPackages.Log-Timeline
-          rakuPackages.OO-Monitors
+        patches = [
+          ./pkgs/rakudo/patches/Cro-HTTP-test-certs.patch
+        ];
+        depends = with rakuPackages; [
+          Base64
+          Cro-Core
+          Cro-TLS
+          Crypt-Random
+          DateTime-Parse
+          HTTP-HPACK
+          IO-Path-ChildSecure
+          IO-Socket-Async-SSL
+          JSON-Fast
+          JSON-JWT
+          Log-Timeline
+          OO-Monitors
         ];
         src = fetchTarball {
           url = "https://github.com/croservices/cro-http/archive/9195f51b30d4090550a07732efbfd98c3056573a.tar.gz";
@@ -63,8 +65,8 @@ rec {
           rakuPackages.IO-Socket-Async-SSL
         ];
         src = fetchTarball {
-          url = "https://github.com/croservices/cro-tls/archive/b504b68504903f7ac83cc60dd79a0b9ac8cddb74.tar.gz";
-          sha256 = "0gnphi3drhfwgr6bflh3qpsf8pi49ndh3s2y2w73l6xks2g0w0bn";
+          url = "https://github.com/croservices/cro-tls/archive/c8e82173e69dcd2df11ea55206245e2870917e9d.tar.gz";
+          sha256 = "1c607aryddzx5jmw947raw3ixs0ynx4cqg8mm9kh3s0rghkm972f";
         };
         preInstallPhase = ''
           # This package likes to use HOME during compilation.
