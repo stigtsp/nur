@@ -17,5 +17,7 @@ rec {
   elgato-ghcd-firmware = callPackages ./pkgs/elgato-gchd/firmware.nix {};
   elgato-gchd = callPackages ./pkgs/elgato-gchd { elgato-gchd-firmware = elgato-ghcd-firmware; };
 
+  yuma123 = callPackages ./pkgs/yuma123 { };
+
 }
 
