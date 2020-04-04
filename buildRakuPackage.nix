@@ -1,8 +1,8 @@
-{ lib, stdenv, makeWrapper, rakudo, zef }:
+{ lib, stdenv, makeWrapper, rakudo, zef, toRakuPackage, requiredRakuPackages }:
 { name, src
 , buildInputs ? [], depends ? [], propagatedBuildInputs ? []
 , preInstallPhase ? "true", postInstallPhase ? "true", patches ? [] }:
-stdenv.mkDerivation {
+toRakuPackage(stdenv.mkDerivation ({
     inherit name src patches;
 
     buildInputs = [makeWrapper rakudo] ++ buildInputs;
@@ -30,7 +30,7 @@ stdenv.mkDerivation {
         mkdir -p $out
 
         # Create the LD_LIBRARY_PATH for propagated inputs
-        export RAKUDO_LD_LIBRARY_PATH="${stdenv.lib.makeSearchPathOutput "lib" "lib" (stdenv.lib.misc.closePropagation(propagatedBuildInputs))}''${RAKUDO_LD_LIBRARY_PATH:+:''${RAKUDO_LD_LIBRARY_PATH}}"
+        export RAKUDO_LD_LIBRARY_PATH="${stdenv.lib.makeSearchPathOutput "lib" "lib" (propagatedBuildInputs)}''${RAKUDO_LD_LIBRARY_PATH:+:''${RAKUDO_LD_LIBRARY_PATH}}"
         export RAKUDOLIB="inst#$out''${RAKUDOLIB:+,''${RAKUDOLIB}}"
 
         # Create a hook to propagate the LD_LIBRARY_PATH used by for
@@ -50,4 +50,10 @@ stdenv.mkDerivation {
 
 
     '';
+} 
+//
+{
+  pname = "rakudo${rakudo.version}-${name}"; # TODO: phase-out `attrs.name`
+  version = "0.0";#lib.getVersion attrs;                     # TODO: phase-out `attrs.name`
 }
+))

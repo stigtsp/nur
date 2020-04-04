@@ -5,16 +5,18 @@ rec {
   modules = import ./modules;
   overlays = import ./overlays;
 
-  rakudo = callPackage ./pkgs/rakudo { nqp = nqp; };
-  moarvm = callPackage ./pkgs/rakudo/moarvm.nix {
-    inherit (darwin.apple_sdk.frameworks) CoreServices ApplicationServices;
-  };
-  nqp = callPackage ./pkgs/rakudo/nqp.nix { moarvm = moarvm; };
-  zef = callPackage ./pkgs/rakudo/zef.nix { rakudo = rakudo; };
+  #rakudo = callPackage ./pkgs/rakudo { nqp = nqp; };
+  #moarvm = callPackage ./pkgs/rakudo/moarvm.nix {
+  #  inherit (darwin.apple_sdk.frameworks) CoreServices ApplicationServices;
+  #};
+  #nqp = callPackage ./pkgs/rakudo/nqp.nix { moarvm = moarvm; };
+  #zef = callPackage ./pkgs/rakudo/zef.nix { rakudo = rakudo; };
+
+  rakuPackages = import ./rakuPackages.nix { inherit pkgs lib stdenv makeWrapper rakudo zef fetchurl; };
 
   rakuPackage = pkgs.callPackage ./pkgs/rakudo/rakuPackage.nix { rakudo = rakudo; zef = zef; };
 
-  rakuPackages = {
+  rakuPackagesXXX = {
     Base64 = rakuPackage {
       name = "Base64";
       src = fetchTarball {
